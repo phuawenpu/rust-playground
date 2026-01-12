@@ -20,7 +20,9 @@
                         <span class="btn-icon">&#9654;</span> Run
                     </button>
                 </div>
-                <textarea id="codeEditor" spellcheck="false">fn main() {
+                <div class="editor-container">
+                    <pre id="highlighted" aria-hidden="true"><code></code></pre>
+                    <textarea id="codeEditor" spellcheck="false">fn main() {
     println!("Hello, Rust Playground!");
     
     // Try some Rust code
@@ -28,6 +30,7 @@
     let sum: i32 = numbers.iter().sum();
     println!("Sum of {:?} is {}", numbers, sum);
 }</textarea>
+                </div>
             </div>
             
             <div class="output-section">
