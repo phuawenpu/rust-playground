@@ -195,7 +195,7 @@ main {
     background: var(--bg-secondary);
     color: var(--text-primary);
     border: none;
-    font-family: 'Fira Code', 'Monaco', 'Consolas', monospace;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
     font-size: 14px;
     line-height: 1.6;
     tab-size: 4;
@@ -224,7 +224,7 @@ main {
     caret-color: var(--caret-color);
     border: none;
     resize: none;
-    font-family: 'Fira Code', 'Monaco', 'Consolas', monospace;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
     font-size: 14px;
     line-height: 1.6;
     outline: none;
@@ -276,7 +276,7 @@ main {
     flex: 1;
     min-height: 400px;
     padding: 16px;
-    font-family: 'Fira Code', 'Monaco', 'Consolas', monospace;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
     font-size: 14px;
     line-height: 1.6;
     white-space: pre-wrap;
