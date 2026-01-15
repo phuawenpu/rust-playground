@@ -127,4 +127,23 @@ document.addEventListener('DOMContentLoaded', () => {
     checkStatus();
     loadCrates();
     setInterval(checkStatus, 30000);
+
+    const themeToggle = document.getElementById('themeToggle');
+    
+    function loadTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-theme');
+            themeToggle.checked = true;
+        }
+    }
+
+    function toggleTheme() {
+        document.body.classList.toggle('light-theme');
+        const isLight = document.body.classList.contains('light-theme');
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    }
+
+    loadTheme();
+    themeToggle.addEventListener('change', toggleTheme);
 });
