@@ -70,48 +70,22 @@ header h1 {
 }
 
 .theme-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    min-width: 36px;
-    background: #2a2a3e;
-    border: 2px solid #f47f20;
-    border-radius: 50%;
+    display: inline-block;
+    background: #f47f20;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 18px;
-    line-height: 1;
-    padding: 0;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 8px 16px;
     margin-left: 12px;
-}
-
-body.light-theme .theme-btn {
-    background: #ffffff;
-    border-color: #e55d0c;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .theme-btn:hover {
-    background: #f47f20;
-    transform: scale(1.1);
-}
-
-.dark-icon {
-    color: #ffd43b;
-}
-
-.light-icon {
-    display: none;
-    color: #ff922b;
-}
-
-body.light-theme .dark-icon {
-    display: none;
-}
-
-body.light-theme .light-icon {
-    display: inline;
+    background: #e55d0c;
 }
 
 .subtitle {
