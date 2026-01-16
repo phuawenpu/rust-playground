@@ -156,6 +156,79 @@ async fn remove_crate(req: web::Json<RemoveCrateRequest>, data: web::Data<AppSta
     }
 }
 
+#[derive(Deserialize)]
+struct FormatRequest {
+    code: String,
+}
+
+#[derive(Serialize)]
+struct FormatResponse {
+    success: bool,
+    formatted: String,
+    error: String,
+}
+
+async fn format_code(req: web::Json<FormatRequest>) -> HttpResponse {
+    let id = Uuid::new_v4().to_string();
+    let temp_file = format!("/tmp/rustfmt-{}.rs", id);
+
+    if let Err(e) = std::fs::write(&temp_file, &req.code) {
+        return HttpResponse::InternalServerError().json(FormatResponse {
+            success: false,
+            formatted: String::new(),
+            error: format!("Failed to write temp file: {}", e),
+        });
+    }
+
+    let result = Command::new("rustfmt")
+        .arg(&temp_file)
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .output()
+        .await;
+
+    match result {
+        Ok(output) => {
+            if output.status.success() {
+                match std::fs::read_to_string(&temp_file) {
+                    Ok(formatted) => {
+                        let _ = std::fs::remove_file(&temp_file);
+                        HttpResponse::Ok().json(FormatResponse {
+                            success: true,
+                            formatted,
+                            error: String::new(),
+                        })
+                    }
+                    Err(e) => {
+                        let _ = std::fs::remove_file(&temp_file);
+                        HttpResponse::InternalServerError().json(FormatResponse {
+                            success: false,
+                            formatted: String::new(),
+                            error: format!("Failed to read formatted file: {}", e),
+                        })
+                    }
+                }
+            } else {
+                let stderr = String::from_utf8_lossy(&output.stderr).to_string();
+                let _ = std::fs::remove_file(&temp_file);
+                HttpResponse::Ok().json(FormatResponse {
+                    success: false,
+                    formatted: String::new(),
+                    error: stderr,
+                })
+            }
+        }
+        Err(e) => {
+            let _ = std::fs::remove_file(&temp_file);
+            HttpResponse::InternalServerError().json(FormatResponse {
+                success: false,
+                formatted: String::new(),
+                error: format!("rustfmt failed: {}", e),
+            })
+        }
+    }
+}
+
 async fn run_code(req: web::Json<RunRequest>, data: web::Data<AppState>) -> HttpResponse {
     let id = Uuid::new_v4().to_string();
     let temp_dir = format!("/tmp/rust-playground-{}", id);
@@ -318,6 +391,7 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .app_data(app_state.clone())
             .route("/api/run", web::post().to(run_code))
+            .route("/api/format", web::post().to(format_code))
             .route("/api/status", web::get().to(check_status))
             .route("/api/crates", web::get().to(list_crates))
             .route("/api/crates/add", web::post().to(add_crate))

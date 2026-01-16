@@ -154,11 +154,49 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    const formatBtn = document.getElementById('formatBtn');
+
     runBtn.addEventListener('click', runCode);
     clearBtn.addEventListener('click', () => {
         output.innerHTML = '<span class="placeholder">Click "Run" to execute your code...</span>';
         output.className = 'output-content';
     });
+
+    formatBtn.addEventListener('click', formatCode);
+
+    async function formatCode() {
+        const code = codeEditor.value;
+        if (!code.trim()) return;
+
+        formatBtn.disabled = true;
+        formatBtn.classList.add('loading');
+        formatBtn.innerHTML = '<span class="btn-icon">&#8635;</span> Formatting...';
+
+        try {
+            const response = await fetch('/api/format', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code }),
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                codeEditor.value = result.formatted;
+                updateHighlight();
+            } else {
+                output.textContent = 'Format error: ' + (result.error || 'Unknown error');
+                output.className = 'output-content error';
+            }
+        } catch (err) {
+            output.textContent = 'Format failed: ' + err.message;
+            output.className = 'output-content error';
+        } finally {
+            formatBtn.disabled = false;
+            formatBtn.classList.remove('loading');
+            formatBtn.innerHTML = '<span class="btn-icon">&#8801;</span> Format';
+        }
+    }
 
     async function runCode() {
         const code = codeEditor.value.trim();

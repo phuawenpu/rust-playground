@@ -320,6 +320,41 @@ main {
     color: var(--success);
 }
 
+.btn-group {
+    display: flex;
+    gap: 8px;
+}
+
+.format-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: #4a4a5e;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.format-btn:hover {
+    background: #5a5a6e;
+    transform: translateY(-1px);
+}
+
+.format-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.format-btn.loading .btn-icon {
+    animation: spin 1s linear infinite;
+}
+
 .run-btn {
     display: flex;
     align-items: center;
