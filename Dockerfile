@@ -11,8 +11,10 @@ FROM alpine:latest
 RUN apk add --no-cache \
     rust \
     cargo \
+    rustfmt \
     musl-dev \
-    gcc
+    gcc \
+    curl
 
 COPY --from=builder /app/target/release/rust-playground /usr/local/bin/
 
