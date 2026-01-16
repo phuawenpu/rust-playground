@@ -123,6 +123,31 @@ document.addEventListener('DOMContentLoaded', () => {
             updateHighlight();
         }
 
+        if (e.key === 'Enter' && !e.ctrlKey && !e.metaKey) {
+            e.preventDefault();
+            const start = codeEditor.selectionStart;
+            const value = codeEditor.value;
+            const lineStart = value.lastIndexOf('\n', start - 1) + 1;
+            const currentLine = value.substring(lineStart, start);
+            const indent = currentLine.match(/^(\s*)/)[1];
+            const charBefore = value[start - 1];
+            const charAfter = value[start];
+            let newIndent = indent;
+            if (charBefore === '{' || charBefore === '(' || charBefore === '[') {
+                newIndent = indent + '    ';
+            }
+            if ((charBefore === '{' && charAfter === '}') || 
+                (charBefore === '(' && charAfter === ')') || 
+                (charBefore === '[' && charAfter === ']')) {
+                codeEditor.value = value.substring(0, start) + '\n' + newIndent + '\n' + indent + value.substring(start);
+                codeEditor.selectionStart = codeEditor.selectionEnd = start + 1 + newIndent.length;
+            } else {
+                codeEditor.value = value.substring(0, start) + '\n' + newIndent + value.substring(start);
+                codeEditor.selectionStart = codeEditor.selectionEnd = start + 1 + newIndent.length;
+            }
+            updateHighlight();
+        }
+
         if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
             e.preventDefault();
             runCode();

@@ -70,22 +70,45 @@ header h1 {
 }
 
 .theme-btn {
-    display: inline-block;
-    background: #f47f20;
-    color: #ffffff;
-    border: none;
-    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: #2a2a3e;
+    border: 2px solid #f47f20;
+    border-radius: 50%;
     cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-    padding: 8px 16px;
+    font-size: 22px;
     margin-left: 12px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    padding: 0;
+    transition: all 0.3s ease;
 }
 
 .theme-btn:hover {
-    background: #e55d0c;
+    background: #f47f20;
+    transform: scale(1.1);
+}
+
+.icon-moon {
+    color: #ffd43b;
+}
+
+.icon-sun {
+    display: none;
+    color: #ff922b;
+}
+
+body.light-theme .theme-btn {
+    background: #ffffff;
+}
+
+body.light-theme .icon-moon {
+    display: none;
+}
+
+body.light-theme .icon-sun {
+    display: inline;
 }
 
 .subtitle {
